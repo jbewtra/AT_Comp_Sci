@@ -44,29 +44,24 @@ def would_win(board, col, player):
 def bot_choice(board):
     global first_move
 
-    # Step 1: Play winning move if available
     for col in range(7):
-        if is_valid_move(board, col) and would_win(board, col, 1):  # If I can win, play there
+        if is_valid_move(board, col) and would_win(board, col, 1):  
             return play(key, col)
 
-    # Step 2: Block opponent's winning move
     for col in range(7):
-        if is_valid_move(board, col) and would_win(board, col, 2):  # If opponent can win, block them
+        if is_valid_move(board, col) and would_win(board, col, 2):  
             return play(key, col)
 
-    # Step 3: First move -> Play randomly in columns (2, 3, 4)
     if first_move:
         first_move = False
         options = [col for col in [2, 3, 4] if is_valid_move(board, col)]
         if options:
             return play(key, random.choice(options))
 
-    # Step 4: After first move, play randomly in any available column
     valid_moves = [col for col in range(7) if is_valid_move(board, col)]
     if valid_moves:
         return play(key, random.choice(valid_moves))
-
-    return None  # No valid move (shouldn’t happen)
+    return None
 
 def full_play(key):
     r = get_status(key)
@@ -90,6 +85,6 @@ def full_play(key):
     else:
         print(r.content)
     
-    threading.Timer(2, full_play, [key]).start()
+    threading.Timer(10, full_play, [key]).start()
 
 full_play(key)
